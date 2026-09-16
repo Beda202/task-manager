@@ -1,0 +1,72 @@
+<div class="task-list-page">
+  <header class="page-header">
+    <div>
+      <h1>Tasks</h1>
+      <p class="subtitle">
+        {{ taskService.doneCount() }} / {{ taskService.totalTasks() }} completed
+      </p>
+    </div>
+    <a routerLink="/tasks/new" class="btn btn-primary">+ New Task</a>
+  </header>
+
+  <div class="filters">
+    <button
+      class="chip"
+      [class.active]="statusFilter() === 'all'"
+      (click)="setFilter('all')"
+    >
+      All
+    </button>
+    <button
+      class="chip"
+      [class.active]="statusFilter() === 'todo'"
+      (click)="setFilter('todo')"
+    >
+      To do
+    </button>
+    <button
+      class="chip"
+      [class.active]="statusFilter() === 'in-progress'"
+      (click)="setFilter('in-progress')"
+    >
+      In progress
+    </button>
+    <button
+      class="chip"
+      [class.active]="statusFilter() === 'done'"
+      (click)="setFilter('done')"
+    >
+      Done
+    </button>
+  </div>
+
+  @if (taskService.loading()) {
+    <p class="empty-state">Loading tasks...</p>
+  } @else if (filteredTasks().length === 0) {
+    <p class="empty-state">No tasks here yet.</p>
+  } @else {
+    <ul class="task-cards">
+      @for (task of filteredTasks(); track task.id) {
+        <li>
+          <a [routerLink]="['/tasks', task.id]" class="task-card">
+            <div class="task-card-main">
+              <span class="status-dot" [attr.data-status]="task.status"></span>
+              <div>
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+              </div>
+            </div>
+            <div class="task-card-meta">
+              <span class="badge" [attr.data-priority]="task.priority">
+                {{ task.priority }}
+              </span>
+              <button class="btn-icon" (click)="onDelete(task.id, $event)" title="Delete">
+                ✕
+              </button>
+            </div>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+</div>

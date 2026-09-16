@@ -1,0 +1,34 @@
+<div class="task-detail-page">
+  <a routerLink="/tasks" class="back-link">&larr; Back to tasks</a>
+
+  @if (task(); as t) {
+    <div class="detail-card">
+      <header>
+        <h1>{{ t.title }}</h1>
+        <span class="badge" [attr.data-priority]="t.priority">{{ t.priority }}</span>
+      </header>
+
+      <p class="description">{{ t.description }}</p>
+
+      <div class="meta">
+        <span class="status-dot" [attr.data-status]="t.status"></span>
+        <span>Status: <strong>{{ t.status }}</strong></span>
+      </div>
+
+      <div class="status-actions">
+        <button (click)="changeStatus('todo')" [disabled]="t.status === 'todo'">To do</button>
+        <button (click)="changeStatus('in-progress')" [disabled]="t.status === 'in-progress'">
+          In progress
+        </button>
+        <button (click)="changeStatus('done')" [disabled]="t.status === 'done'">Done</button>
+      </div>
+
+      <div class="form-actions">
+        <a [routerLink]="['/tasks', t.id, 'edit']" class="btn btn-secondary">Edit</a>
+        <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+      </div>
+    </div>
+  } @else {
+    <p class="empty-state">Task not found.</p>
+  }
+</div>
