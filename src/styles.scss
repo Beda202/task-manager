@@ -49,6 +49,20 @@ h3 { margin: 0 0 4px; font-size: 16px; }
 }
 .subtitle { color: #6b7280; font-size: 14px; margin: 0; }
 
+.search-box {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  font-family: inherit;
+}
+.search-box:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
 .filters { display: flex; gap: 8px; margin-bottom: 16px; }
 .chip {
   padding: 6px 14px;

@@ -9,6 +9,14 @@
     <a routerLink="/tasks/new" class="btn btn-primary">+ New Task</a>
   </header>
 
+  <input
+    type="text"
+    class="search-box"
+    placeholder="Search tasks by title..."
+    [ngModel]="searchTerm()"
+    (ngModelChange)="onSearchChange($event)"
+  />
+
   <div class="filters">
     <button
       class="chip"
@@ -43,7 +51,7 @@
   @if (taskService.loading()) {
     <p class="empty-state">Loading tasks...</p>
   } @else if (filteredTasks().length === 0) {
-    <p class="empty-state">No tasks here yet.</p>
+    <p class="empty-state">No tasks match your search.</p>
   } @else {
     <ul class="task-cards">
       @for (task of filteredTasks(); track task.id) {
