@@ -1,7 +1,9 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, delay } from 'rxjs';
 import { Task, NewTask, TaskStatus } from './task';
+
+const STORAGE_KEY = 'task-manager:tasks';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +23,42 @@ export class TaskService {
   private nextId = 1;
   private hasLoaded = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Runs once at startup, then again every time _tasks changes,
+    // so any add/edit/delete is saved to localStorage automatically.
+    effect(() => {
+      const tasks = this._tasks();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      } catch {
+        // localStorage can fail (private browsing, storage full, etc.)
+        // Not critical here, so we just skip saving.
+      }
+    });
+  }
+
+  private readFromStorage(): Task[] | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as Task[]) : null;
+    } catch {
+      return null;
+    }
+  }
 
   loadTasks(): void {
     if (this.hasLoaded) {
       return;
     }
     this.hasLoaded = true;
+
+    const stored = this.readFromStorage();
+    if (stored && stored.length > 0) {
+      this._tasks.set(stored);
+      this.nextId = Math.max(...stored.map((t) => t.id)) + 1;
+      return;
+    }
+
     this._loading.set(true);
 
     const seed: Task[] = [

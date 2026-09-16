@@ -1,4 +1,8 @@
 <div class="task-list-page">
+  @if (toastMessage(); as msg) {
+    <div class="toast">{{ msg }}</div>
+  }
+
   <header class="page-header">
     <div>
       <h1>Tasks</h1>
@@ -17,35 +21,46 @@
     (ngModelChange)="onSearchChange($event)"
   />
 
-  <div class="filters">
-    <button
-      class="chip"
-      [class.active]="statusFilter() === 'all'"
-      (click)="setFilter('all')"
+  <div class="toolbar-row">
+    <div class="filters">
+      <button
+        class="chip"
+        [class.active]="statusFilter() === 'all'"
+        (click)="setFilter('all')"
+      >
+        All ({{ counts().all }})
+      </button>
+      <button
+        class="chip"
+        [class.active]="statusFilter() === 'todo'"
+        (click)="setFilter('todo')"
+      >
+        To do ({{ counts().todo }})
+      </button>
+      <button
+        class="chip"
+        [class.active]="statusFilter() === 'in-progress'"
+        (click)="setFilter('in-progress')"
+      >
+        In progress ({{ counts()['in-progress'] }})
+      </button>
+      <button
+        class="chip"
+        [class.active]="statusFilter() === 'done'"
+        (click)="setFilter('done')"
+      >
+        Done ({{ counts().done }})
+      </button>
+    </div>
+
+    <select
+      class="sort-select"
+      [ngModel]="sortBy()"
+      (ngModelChange)="setSort($event)"
     >
-      All
-    </button>
-    <button
-      class="chip"
-      [class.active]="statusFilter() === 'todo'"
-      (click)="setFilter('todo')"
-    >
-      To do
-    </button>
-    <button
-      class="chip"
-      [class.active]="statusFilter() === 'in-progress'"
-      (click)="setFilter('in-progress')"
-    >
-      In progress
-    </button>
-    <button
-      class="chip"
-      [class.active]="statusFilter() === 'done'"
-      (click)="setFilter('done')"
-    >
-      Done
-    </button>
+      <option value="date">Newest first</option>
+      <option value="priority">By priority</option>
+    </select>
   </div>
 
   @if (taskService.loading()) {

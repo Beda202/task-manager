@@ -63,6 +63,35 @@ h3 { margin: 0 0 4px; font-size: 16px; }
   border-color: #2563eb;
 }
 
+.toast {
+  background: #16a34a;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.toolbar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.toolbar-row .filters { margin-bottom: 0; }
+
+.sort-select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+  background: #fff;
+  font-family: inherit;
+}
+
 .filters { display: flex; gap: 8px; margin-bottom: 16px; }
 .chip {
   padding: 6px 14px;

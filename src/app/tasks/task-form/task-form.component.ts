@@ -58,10 +58,14 @@ export class TaskFormComponent implements OnInit {
 
     if (id !== null) {
       this.taskService.updateTask(id, value);
-      this.router.navigate(['/tasks', id]);
+      this.router.navigate(['/tasks'], {
+        state: { message: 'Task updated successfully' },
+      });
     } else {
       this.taskService.addTask(value);
-      this.router.navigate(['/tasks']);
+      this.router.navigate(['/tasks'], {
+        state: { message: 'Task created successfully' },
+      });
     }
   }
 }
